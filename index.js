@@ -1,5 +1,6 @@
 var SPMWebpackPlugin = require('./SPMWebpackPlugin');
 var path = require('path');
+var webpack = require('webpack');
 module.exports = function(opt) {
   return {
     entry: opt.entry,
@@ -27,7 +28,8 @@ module.exports = function(opt) {
       compress: {
         warnings: false
       }
-    })],
+    })
+    ],
     devtool: '#source-map'
   }
 };
