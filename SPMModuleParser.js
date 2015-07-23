@@ -99,6 +99,7 @@ function getVersion(version, dest) {
     var specVer = dest.split('@');
     if (semver.valid(specVer[1])) {
         var specPath = join(specVer[0], specVer[1]);
+        if (!exists(specPath)) return;
         var specPkg = getPkg(specPath);
         return {
             version: specPkg.version,
@@ -108,7 +109,6 @@ function getVersion(version, dest) {
     }
 
     if (!exists(dest)) return;
-
 
     var map = {};
     var dirs = fs.readdirSync(dest);
