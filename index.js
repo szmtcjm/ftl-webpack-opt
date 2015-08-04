@@ -19,7 +19,8 @@ module.exports = function(opt) {
       }]
     },
     externals: {
-      jquery: 'jQuery'
+      jquery: 'jQuery',
+      page: 'page'
     },
     plugins: [
       new SPMWebpackPlugin(opt.base),
