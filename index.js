@@ -1,8 +1,9 @@
 var SPMWebpackPlugin = require('./SPMWebpackPlugin');
 var path = require('path');
 var webpack = require('webpack');
-module.exports = function(opt) {
-  return {
+
+module.exports = function(opt, type) {
+  var base = {
     entry: opt.entry,
     output: {
       path: opt.outputPath,
@@ -16,21 +17,24 @@ module.exports = function(opt) {
       }, {
         test: /\.(png|jpe?g|gif|eot|svg|ttf|woff)$/,
         loader: 'url?limit=10000'
+      }, {
+        test: /\.less$/,
+        loader: 'style!css!less'
       }]
     },
     externals: {
-      jquery: 'jQuery',
-      page: 'page'
+      jquery: 'jQuery'
     },
     plugins: [
-      new SPMWebpackPlugin(opt.base),
-      new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-    ],
-    devtool: '#source-map'
+      new SPMWebpackPlugin(opt.base)
+    ]
+  };
+
+  if (type === 'dev') {
+    base.devtool = '#source-map';
+  } else {
+    opt.plugins.push(new webpack.optimize.OccurenceOrderPlugin(), new webpack.optimize.UglifyJsPlugin({compress: { warnings: false}}));
   }
+
+  return base;
 };
