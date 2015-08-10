@@ -33,7 +33,7 @@ module.exports = function(opt, type) {
   if (type === 'dev') {
     base.devtool = '#source-map';
   } else {
-    opt.plugins.push(new webpack.optimize.OccurenceOrderPlugin(), new webpack.optimize.UglifyJsPlugin({compress: { warnings: false}}));
+    base.plugins.push(new webpack.optimize.OccurenceOrderPlugin(), new webpack.optimize.UglifyJsPlugin({compress: { warnings: false}}));
   }
 
   return base;
