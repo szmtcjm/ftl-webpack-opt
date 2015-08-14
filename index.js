@@ -1,6 +1,8 @@
 var SPMWebpackPlugin = require('./SPMWebpackPlugin');
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer-core');
+var csswring = require('csswring');
 
 module.exports = function(opt, type) {
   var base = {
@@ -13,13 +15,13 @@ module.exports = function(opt, type) {
     module: {
       loaders: [{
         test: /\.css$/,
-        loader: 'style!css'
+        loader: 'style!css!postcss-loader'
       }, {
         test: /\.(png|jpe?g|gif|eot|svg|ttf|woff)$/,
         loader: 'url?limit=10000'
       }, {
         test: /\.less$/,
-        loader: 'style!css!less'
+        loader: 'style!css!postcss-loader!less'
       }]
     },
     externals: {
@@ -27,7 +29,13 @@ module.exports = function(opt, type) {
     },
     plugins: [
       new SPMWebpackPlugin(opt.base)
-    ]
+    ],
+    postcss: function() {
+      return [
+        autoprefixer({browsers: ['> 1% in CN', 'last 6 versions', 'iOS > 6', 'Android > 4.2']}),
+        csswring({preserveHacks: true})
+      ];
+    }
   };
 
   if (type === 'dev') {
@@ -35,6 +43,6 @@ module.exports = function(opt, type) {
   } else {
     base.plugins.push(new webpack.optimize.OccurenceOrderPlugin(), new webpack.optimize.UglifyJsPlugin({compress: { warnings: false}}));
   }
-
-  return base;
+  
+  return webpack(base);
 };

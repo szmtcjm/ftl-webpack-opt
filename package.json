@@ -19,10 +19,9 @@
     "email": "szmtcjm@126.com"
   },
   "dependencies": {
+    "autoprefixer-core": "^5.2.1",
     "browser-resolve": "^1.9.0",
-    "file-loader": "^0.8.4",
-    "less": "^2.5.1",
-    "less-loader": "^2.2.0",
+    "csswring": "^3.0.5",
     "node-libs-browser": "^0.5.2",
     "semver": "^5.0.1",
     "webpack": "^1.10.1"
