@@ -2,7 +2,6 @@ var SPMWebpackPlugin = require('./SPMWebpackPlugin');
 var path = require('path');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer-core');
-var csswring = require('csswring');
 
 module.exports = function(opt, type) {
   var base = {
@@ -32,8 +31,7 @@ module.exports = function(opt, type) {
     ],
     postcss: function() {
       return [
-        autoprefixer({browsers: ['> 1% in CN', 'last 6 versions', 'iOS > 6', 'Android > 4.2']}),
-        csswring({preserveHacks: true})
+        autoprefixer({browsers: ['> 1% in CN', 'last 6 versions', 'iOS > 6', 'Android > 4.2']})
       ];
     }
   };
@@ -43,6 +41,6 @@ module.exports = function(opt, type) {
   } else {
     base.plugins.push(new webpack.optimize.OccurenceOrderPlugin(), new webpack.optimize.UglifyJsPlugin({compress: { warnings: false}}));
   }
-  
+
   return webpack(base);
 };
