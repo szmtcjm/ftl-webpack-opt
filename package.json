@@ -21,8 +21,9 @@
   "dependencies": {
     "autoprefixer-core": "^5.2.1",
     "browser-resolve": "^1.9.0",
-    "csswring": "^3.0.5",
+    "cssnano": "^2.6.1",
     "node-libs-browser": "^0.5.2",
+    "postcss-url": "^4.0.1",
     "semver": "^5.0.1",
     "webpack": "^1.10.1"
   }
