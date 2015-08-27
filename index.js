@@ -1,9 +1,31 @@
-var SPMWebpackPlugin = require('./SPMWebpackPlugin');
+var fs = require('fs');
 var path = require('path');
+var crypto = require('crypto');
+var url = require('url');
+var SPMWebpackPlugin = require('./SPMWebpackPlugin');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer-core');
+var cssnano = require('cssnano');
+var postcssUrl = require('postcss-url');
 
-module.exports = function(opt, type) {
+var config = {
+  src: path.join(process.cwd(), 'src'),
+  domain: '//i.epay.126.net/m/f/'
+};
+
+function postcssUrlFallback(originUrl) {
+    var content = fs.readFileSync(path.resolve(config.src, originUrl));
+    var md5 = crypto.createHash('md5').update(content).digest('hex').slice(0, 10);
+    return url.resolve(config.domain, originUrl) + '?' + md5;
+}
+
+var postcssPluins = exports.postcssPluins = {
+  autoprefixer: autoprefixer({browsers: ['> 1% in CN', 'last 15 versions', 'iOS > 6', 'Android > 4.2']}),
+  postcssUrl: postcssUrl({url: 'inline', maxSize: 8, fallback: postcssUrlFallback, basePath: config.src}),
+  cssnano: cssnano()
+}
+
+exports.webpackCompiler = function(opt, type) {
   var base = {
     entry: opt.entry,
     output: {
@@ -31,7 +53,8 @@ module.exports = function(opt, type) {
     ],
     postcss: function() {
       return [
-        autoprefixer({browsers: ['> 1% in CN', 'last 6 versions', 'iOS > 6', 'Android > 4.2']})
+        postcssPluins.postcssUrl,
+        postcssPluins.autoprefixer
       ];
     }
   };
